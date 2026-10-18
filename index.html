@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GhostFour — Four-bar ghost note desk</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="shell">
+  <header>
+    <div class="eyebrow">Workin' With AI · Live Chair Desk</div>
+    <h1>GhostFour</h1>
+    <p>Four live bars of ghost notes so a static loop finally breathes and finishes.</p>
+  </header>
+  <section class="controls">
+    <label>BPM <input id="bpm" type="number" min="60" max="180" value="98"></label>
+    <label>Key
+      <select id="key">
+        <option>A minor</option>
+        <option>C major</option>
+        <option>G major</option>
+        <option>D minor</option>
+        <option>E minor</option>
+      </select>
+    </label>
+    <label>Recipe
+      <select id="recipe">
+        <option value="nylon">Nylon ghosts</option>
+        <option value="piano">Piano anticipations</option>
+        <option value="trumpet">Trumpet whispers</option>
+        <option value="kit">Kit ghosts</option>
+      </select>
+    </label>
+    <button id="play">Play</button>
+    <button id="stop">Stop</button>
+    <button id="exportWav">Export WAV</button>
+    <button id="exportMid">Export MIDI</button>
+  </section>
+  <div id="status">Tap to start audio. Seating chairs…</div>
+  <div id="playhead" class="playhead"></div>
+  <pre id="punch"></pre>
+  <footer>
+    GhostFour · Live FluidR3 only · pinned samples · free (MIT)<br>
+    On iOS the silent switch mutes Web Audio. Hardware MIDI not required for this desk.
+  </footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
