@@ -1,6 +1,7 @@
 // GhostFour — Four-bar ghost note desk
 // WorkinWithAI Audio Engine Rules compliant
 // Samples pinned to soundfont-for-samplers@0.0.3 (not @main)
+// License gate: any non-empty key starting with GF- or LS- unlocks (demo; replace with real Lemon/Gumroad verify)
 
 const SAMPLE_BASE = "https://cdn.jsdelivr.net/npm/soundfont-for-samplers@0.0.3/FluidR3_GM/";
 
@@ -9,7 +10,8 @@ const state = {
   key: "A minor",
   bars: 4,
   recipe: "nylon",
-  playing: false
+  playing: false,
+  licensed: false
 };
 
 const activeSources = [];
@@ -49,6 +51,16 @@ const neededNotes = ["C3", "E3", "G3", "A3", "C4", "E4", "G4", "A4", "C5", "B3",
 
 function noteToFile(note) {
   return note + ".mp3";
+}
+
+function checkLicense() {
+  const key = document.getElementById("license").value.trim();
+  state.licensed = key.length > 4 && (key.startsWith("GF-") || key.startsWith("LS-") || key.startsWith("GUM-"));
+  localStorage.setItem("ghostfour-license", key);
+  if (!state.licensed) {
+    document.getElementById("status").textContent = "Enter valid license key (GF-/LS-/GUM-) to unlock.";
+  }
+  return state.licensed;
 }
 
 async function preloadSamples() {
@@ -118,7 +130,6 @@ function scheduleStep(stepIdx, time) {
   const notes = getChordNotes(bar);
   const recipe = state.recipe;
 
-  // Main pocket
   if (stepIdx % 16 === 0) {
     playNote("piano", notes.root, time, stepDur * 12, 0.4);
     playNote("upright", notes.low, time, stepDur * 14, 0.45);
@@ -130,7 +141,6 @@ function scheduleStep(stepIdx, time) {
     playNote("kitKick", "C3", time, stepDur * 0.35, 0.5);
   }
 
-  // Ghost notes — quiet anticipations and fills
   if (recipe === "nylon" && (stepIdx % 16 === 15 || stepIdx % 16 === 7)) {
     playNote("nylon", notes.third, time, stepDur * 0.6, 0.18);
   }
@@ -143,7 +153,6 @@ function scheduleStep(stepIdx, time) {
   if (recipe === "kit" && (stepIdx % 16 === 14 || stepIdx % 16 === 15)) {
     playNote("kitSnare", "C3", time, stepDur * 0.2, 0.12);
   }
-  // Always a light nylon ghost on the and-of-4
   if (stepIdx % 16 === 15) {
     playNote("nylon", notes.fifth, time, stepDur * 0.4, 0.12);
   }
@@ -184,6 +193,7 @@ function scheduler() {
 }
 
 function start() {
+  if (!checkLicense()) return;
   if (!audioCtx) initAudio();
   if (audioCtx.state === "suspended") audioCtx.resume();
   if (state.playing) return;
@@ -214,6 +224,7 @@ function updatePlayhead() {
 }
 
 async function exportWAV() {
+  if (!checkLicense()) return;
   document.getElementById("status").textContent = "Rendering exact-length WAV…";
   if (!audioCtx) initAudio();
   for (const key of Object.keys(rawBuffers)) {
@@ -372,8 +383,8 @@ function downloadBlob(blob, name) {
 }
 
 function exportMIDI() {
+  if (!checkLicense()) return;
   const name = `ghostfour-recipe-${state.bpm}bpm-${state.key.replace(/ /g, "")}.mid`;
-  // Minimal MIDI with tempo
   const header = new Uint8Array([0x4D,0x54,0x68,0x64,0x00,0x00,0x00,0x06,0x00,0x01,0x00,0x01,0x01,0xE0]);
   const track = new Uint8Array([0x4D,0x54,0x72,0x6B,0x00,0x00,0x00,0x0B,0x00,0xFF,0x51,0x03,0x07,0xA1,0x20,0x00,0xFF,0x2F,0x00]);
   const mid = new Blob([header, track], { type: "audio/midi" });
@@ -397,6 +408,7 @@ document.getElementById("play").addEventListener("click", start);
 document.getElementById("stop").addEventListener("click", stop);
 document.getElementById("exportWav").addEventListener("click", exportWAV);
 document.getElementById("exportMid").addEventListener("click", exportMIDI);
+document.getElementById("license").addEventListener("change", checkLicense);
 
 document.getElementById("bpm").addEventListener("change", e => {
   state.bpm = Math.max(60, Math.min(180, +e.target.value || 98));
@@ -418,6 +430,8 @@ const savedKey = localStorage.getItem("ghostfour-key");
 if (savedKey) { state.key = savedKey; document.getElementById("key").value = savedKey; }
 const savedRecipe = localStorage.getItem("ghostfour-recipe");
 if (savedRecipe) { state.recipe = savedRecipe; document.getElementById("recipe").value = savedRecipe; }
+const savedLic = localStorage.getItem("ghostfour-license");
+if (savedLic) { document.getElementById("license").value = savedLic; checkLicense(); }
 
 document.getElementById("punch").textContent = `GhostFour punch list
 Four bars of live ghost notes so the loop breathes.
@@ -425,6 +439,7 @@ Quiet anticipations on the and-of-4, light fills, no volume bump.
 Export drops on grid at sample 0, exact length, tail folded.
 Live changes apply next step. Stop silences immediately.
 On iOS, silent switch mutes Web Audio.
+License gate: enter GF-/LS-/GUM- key to unlock.
 
 Distinct from SpaceFour (air for slam), ArcEight (energy arc), RoomFour (room), PunchFour (hits).
 GhostFour is the quiet notes that make the pocket finish.`;
