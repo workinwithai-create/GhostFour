@@ -22,7 +22,7 @@ Yesterday's ship was SpaceFour (air). GhostFour is the subtle notes that make a 
 
 1–4 pocket with ghosts · the quiet notes finish the loop
 
-## Pricing recommendation
+## Pricing and license
 
 One-time **$19** on Gumroad. Mirror on Lemon Squeezy. Optional $9 add-on inside Forge Pass ($24/mo).
 
@@ -30,7 +30,7 @@ This is a finite desk, not a recurring studio. Do not subscribe it standalone. S
 
 Best place to sell: Gumroad (producers buy one-time tools there) + Lemon Squeezy as merchant of record. Link from workinwithai.com beside the Forge line.
 
-**Current app is free.** No license gate. MIT. A priced build would need a Lemon Squeezy or Gumroad key check.
+**License gate connected.** Enter a key starting with GF-, LS-, or GUM- to unlock play and exports (demo client-side check; replace with real Lemon Squeezy / Gumroad license API verification for production sales). MIT source, commercial desk gated.
 
 ## Acceptance (section 9)
 
@@ -44,8 +44,10 @@ Best place to sell: Gumroad (producers buy one-time tools there) + Lemon Squeezy
 
 ## License
 
-MIT. workinwithai-create. Free to use; README states one-time pricing for the commercial desk.
+MIT source. workinwithai-create. Commercial use requires valid license key (Gumroad/Lemon Squeezy).
 
 ## Stack
 
 Static HTML/CSS/JS. Deploy on Vercel team `release-forge`.
+
+Permanent live: https://ghostfour.vercel.app/
