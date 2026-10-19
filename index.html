@@ -14,6 +14,7 @@
     <p>Four live bars of ghost notes so a static loop finally breathes and finishes.</p>
   </header>
   <section class="controls">
+    <label>License Key <input id="license" type="text" placeholder="GF-XXXX or Lemon key" value=""></label>
     <label>BPM <input id="bpm" type="number" min="60" max="180" value="98"></label>
     <label>Key
       <select id="key">
@@ -37,12 +38,13 @@
     <button id="exportWav">Export WAV</button>
     <button id="exportMid">Export MIDI</button>
   </section>
-  <div id="status">Tap to start audio. Seating chairs…</div>
+  <div id="status">Tap to start audio. Enter license to unlock full exports.</div>
   <div id="playhead" class="playhead"></div>
   <pre id="punch"></pre>
   <footer>
-    GhostFour · Live FluidR3 only · pinned samples · free (MIT)<br>
-    On iOS the silent switch mutes Web Audio. Hardware MIDI not required for this desk.
+    GhostFour · Live FluidR3 only · pinned samples · $19 one-time (license gate active)<br>
+    On iOS the silent switch mutes Web Audio. Hardware MIDI not required for this desk.<br>
+    Buy at Gumroad or Lemon Squeezy — key unlocks exports.
   </footer>
 </main>
 <script src="app.js"></script>
